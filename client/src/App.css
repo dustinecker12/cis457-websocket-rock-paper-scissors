@@ -1,0 +1,82 @@
+#root {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  height: 100dvh;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.gameBoard {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.gameBoard img {
+  height: 250px;
+  width: 250px;
+  padding: 100px;
+}
+
+.verticalBar {
+  border-left: 2px solid rgba(255, 255, 255, 0.87);
+  height: 100%;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px;
+}
+
+.rpsButton {
+  height: 200px;
+  width: 200px;
+  padding: 0;
+  margin: 0px 10px 0px 10px;
+}
+
+.author {
+  margin-top: 75px;
+}
+
+@keyframes p1RockAnimation {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-15deg);
+  }
+}
+
+@keyframes p2RockAnimation {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+}
+
+.playerOneChoice {
+  width: 100px;
+  height: auto;
+  animation: p1RockAnimation 0.75s ease-in-out infinite;
+  animation-iteration-count: 3;
+}
+
+.playerTwoChoice {
+  width: 100px;
+  height: auto;
+  animation: p2RockAnimation 0.75s ease-in-out infinite;
+  animation-iteration-count: 3;
+}
