@@ -3,9 +3,9 @@ import './App.css';
 
 import rockLeft from './assets/rock-left.png';
 import rockRight from './assets/rock-right.png';
-import paperLeft from './assets/paper-left.png';
+// import paperLeft from './assets/paper-left.png';
 import paperRight from './assets/paper-right.png';
-import scissorsLeft from './assets/scissors-left.png';
+// import scissorsLeft from './assets/scissors-left.png';
 import scissorsRight from './assets/scissors-right.png';
 import unchecked from './assets/unchecked.png';
 import checked from './assets/checked.png';
@@ -14,6 +14,8 @@ const App = () => {
   const [socket, setSocket] = useState(null);
   const [waitingForOtherPlayer, setWaitingForOtherPlayer] = useState(false);
   const [status, setStatus] = useState('');
+  const [playerOneScore, setPlayerOneScore] = useState(0);
+  const [playerTwoScore, setPlayerTwoScore] = useState(0);
 
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:3000');
@@ -24,12 +26,13 @@ const App = () => {
 
     ws.addEventListener('message', (event) => {
       const message = event.data;
+      console.log(message);
       updateStatus(message);
 
       if (message.includes('waiting')) {
         setWaitingForOtherPlayer(true);
       } else {
-        setWaitingForOtherPlayer(false);
+        setScores(message);
       }
     });
 
@@ -42,7 +45,7 @@ const App = () => {
     return () => {
       ws.close();
     };
-  }, []);
+  }, [setPlayerOneScore, setPlayerTwoScore]);
 
   const makeChoice = (choice) => {
     if (waitingForOtherPlayer) {
@@ -59,14 +62,51 @@ const App = () => {
     setStatus(message);
   };
 
+  const setScores = (scoreMessage) => {
+    const match = scoreMessage.match(
+      /Player 1 Score: (\d+), Player 2 Score: (\d+)/
+    );
+    if (match) {
+      const player1Score = parseInt(match[1], 10);
+      const player2Score = parseInt(match[2], 10);
+      setPlayerOneScore(player1Score);
+      setPlayerTwoScore(player2Score);
+    }
+  };
+
   return (
     <div className="game">
       <div className="header">
         <h1>Rock Paper Scissors Game</h1>
-        <div>
-          <img src={checked} alt="Checked Win Box" />
-          <img src={unchecked} alt="Unchecked Win Box" />
-          <img src={unchecked} alt="Unchecked Win Box" />
+        <div className="scoreBoard">
+          <div className="playerOneScore">
+            <h2>Player One Score: {playerOneScore}</h2>
+            {[1, 2, 3].map((index) => (
+              <img
+                key={index}
+                src={playerOneScore >= index ? checked : unchecked}
+                alt={
+                  playerOneScore >= index
+                    ? 'Checked Win Box'
+                    : 'Unchecked Win Box'
+                }
+              />
+            ))}
+          </div>
+          <div className="playerTwoScore">
+            <h2>Player Two Score: {playerTwoScore}</h2>
+            {[1, 2, 3].map((index) => (
+              <img
+                key={index}
+                src={playerTwoScore >= index ? checked : unchecked}
+                alt={
+                  playerTwoScore >= index
+                    ? 'Checked Win Box'
+                    : 'Unchecked Win Box'
+                }
+              />
+            ))}
+          </div>
         </div>
       </div>
       <div className="gameBoard">

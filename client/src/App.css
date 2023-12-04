@@ -12,6 +12,13 @@
   height: 100%;
 }
 
+.scoreBoard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 30px 0px 30px;
+}
+
 .gameBoard {
   display: flex;
   flex-direction: row;
